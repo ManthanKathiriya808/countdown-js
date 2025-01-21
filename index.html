@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+}
+.container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 300px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.timer-display {
+  font-size: 3rem;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.button-group {
+  margin-top: 20px;
+}
+
+button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#startBtn { background: #4CAF50; color: #fff; }
+#pauseBtn { background: #f0ad4e; color: #fff; }
+#resetBtn { background: #d9534f; color: #fff; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> CountDown</h1>
+        <div class="timer-display" id="timerDisplay">00:00:00</div>
+        <div class="button-group">
+          <button id="startBtn">Start</button>
+          <button id="pauseBtn">Pause</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+      </div>
+      
+</body>
+
+<script>
+    let elapsedSeconds = 0;
+let timerInterval = null;
+let isRunning = false;
+
+// Get references to the DOM elements
+const timerDisplay = document.getElementById('timerDisplay');
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+// Function to update the timer display
+function updateDisplay() {
+  const hours = Math.floor(elapsedSeconds / 3600);
+  const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+  const seconds = elapsedSeconds % 60;
+
+  const hoursStr = hours.toString().padStart(2, '0');
+  const minutesStr = minutes.toString().padStart(2, '0');
+  const secondsStr = seconds.toString().padStart(2, '0');
+
+  timerDisplay.textContent = `${hoursStr}:${minutesStr}:${secondsStr}`;
+}
+
+// Start button handler
+startBtn.addEventListener('click', () => {
+  if (!isRunning) {
+    isRunning = true;
+    timerInterval = setInterval(() => {
+      elapsedSeconds++;
+      updateDisplay();
+    }, 1000);
+  }
+});
+
+// Pause button handler
+pauseBtn.addEventListener('click', () => {
+  if (isRunning) {
+    clearInterval(timerInterval);
+    isRunning = false;
+  }
+});
+
+// Reset button handler
+resetBtn.addEventListener('click', () => {
+  clearInterval(timerInterval);
+  isRunning = false;
+  elapsedSeconds = 0;
+  updateDisplay();
+});
+
+// Initialize display
+updateDisplay();
+
+</script>
+</html>
